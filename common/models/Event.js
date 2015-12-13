@@ -41,11 +41,11 @@ module.exports = function(Event) {
 
   Event.start = function(eventId, cb) {
     updateStatus(eventId, Event.statuses.STARTED, cb);
-  }
+  };
 
   Event.close = function(eventId, cb) {
     updateStatus(eventId, Event.statuses.CLOSED, cb);
-  }
+  };
 
   Event.active = function(cb) {
     var today = new Date();
@@ -56,7 +56,7 @@ module.exports = function(Event) {
       if (!events) return cb();
       cb(null, events);
     });
-  }
+  };
 
   Event.getToken = function(eventId, cb) {
     Event.findById(eventId, function(err, ev) {
@@ -65,7 +65,7 @@ module.exports = function(Event) {
 
       cb(null, { token: opentok.generateToken(ev.sessionId) });
     });
-  }
+  };
 
   // archive related.
   var archiveOptions = {
@@ -87,7 +87,7 @@ module.exports = function(Event) {
         cb(null, { success: archive.status === 'started' });
       });
     });
-  }
+  };
 
   // expose remote methods.
   var acceptId = {

@@ -38,7 +38,7 @@ module.exports = function(app, cb) {
       role.principals.create({
         principalType: RoleMapping.USER,
         principalId: users[2].id
-      })
+      });
     });
 
     Role.create({
@@ -48,9 +48,9 @@ module.exports = function(app, cb) {
       role.principals.create({
         principalType: RoleMapping.USER,
         principalId: users[0].id
-      })
+      });
     });
 
     cb();
-  })
+  });
 };

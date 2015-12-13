@@ -5,13 +5,13 @@ var mongoUri = config.get('MONGOLAB_URI') ||
 
 module.exports = {
   mongodb: {
-    defaultForType: "mongodb",
-    connector: "mongodb",
+    defaultForType: 'mongodb',
+    connector: 'mongodb',
     url: mongoUri
   },
 
   sendgrid: {
-    connector: "loopback-connector-sendgrid",
+    connector: 'loopback-connector-sendgrid',
     api_user: config.get('SENDGRID_APIUSER'),
     api_key: config.get('SENDGRID_APIKEY')
   }
