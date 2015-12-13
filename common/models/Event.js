@@ -25,6 +25,17 @@ module.exports = function(Event) {
     updateStatus(eventId, Event.statuses.CLOSED, cb);
   }
 
+  Event.active = function(cb) {
+    var today = new Date();
+    Event.find({
+      where: { startsAt: { gt: today } }
+    }, function(err, events) {
+      if (err) return cb(err);
+      if (!events) return cb();
+      cb(null, events);
+    });
+  }
+
   Event.remoteMethod (
     'start',
     {
@@ -42,4 +53,12 @@ module.exports = function(Event) {
       returns: { arg: 'status', type: 'string' }
     }
   );
+
+  Event.remoteMethod(
+    'active',
+    {
+      http: { path: '/active', verb: 'get' },
+      returns: { arg: 'events', type: 'array' }
+    }
+  )
 };

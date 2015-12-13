@@ -13,7 +13,8 @@
     },
     "status": {
       "type": "string",
-      "required": true
+      "required": true,
+      "default": "CREATED"
     },
     "startsAt": {
       "type": "date"
@@ -21,7 +22,7 @@
     "archiveId": {
       "type": "string"
     },
-    "descripcion": {
+    "description": {
       "type": "string"
     }
   },
