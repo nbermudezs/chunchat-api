@@ -25,6 +25,10 @@
     "dataSource": "mongodb",
     "public": false
   },
+  "Email": {
+    "dataSource": "sendgrid",
+    "public": false
+  },
   "RoleMapping": {
     "dataSource": "mongodb",
     "public": false
