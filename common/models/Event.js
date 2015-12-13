@@ -1,4 +1,24 @@
+var OpenTok = require('opentok');
+var opentok = new OpenTok(
+  process.env.TOKBOX_API_KEY,
+  process.env.TOKBOX_API_SECRET
+);
+
 module.exports = function(Event) {
+  Event.beforeRemote('create', function(context, user, next) {
+    var req = context.req;
+    var options = {};
+    options.mediaMode = req.mediaMode || 'relayed';
+
+    opentok.createSession(options, function(err, session) {
+      if (!err) {
+        req.sessionId = session.sessionId;
+      }
+
+      next();
+    });
+  });
+
   Event.statuses = {
     CREATED: 'CREATED',
     STARTED: 'STARTED',
@@ -35,6 +55,8 @@ module.exports = function(Event) {
       cb(null, events);
     });
   }
+
+  // expose remote methods.
 
   Event.remoteMethod (
     'start',
