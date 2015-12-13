@@ -3,6 +3,10 @@ var archiveOptions = {
   outputMode: config.get('ARCHIVE_OUTPUTMODE')
 };
 
+/*
+ * Model requirements:
+ * fields: archiveId, sessionId
+ */
 module.exports = {
   exposeMethods: function(Model) {
     var acceptId = {
