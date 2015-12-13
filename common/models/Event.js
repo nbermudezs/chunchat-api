@@ -1,7 +1,9 @@
 var OpenTok = require('opentok');
+var config  = require('./../../conf');
+
 var opentok = new OpenTok(
-  process.env.TOKBOX_API_KEY,
-  process.env.TOKBOX_API_SECRET
+  config.get('TOKBOX_APIKEY'),
+  config.get('TOKBOX_APISECRET')
 );
 
 module.exports = function(Event) {

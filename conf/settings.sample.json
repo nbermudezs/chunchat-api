@@ -1,0 +1,7 @@
+{
+  "TOKBOX_APIKEY": "your opentok api key",
+  "TOKBOX_APISECRET": "your opentok api secret",
+
+  "SENDGRID_APIUSER": "your sendgrid user",
+  "SENDGRID_APIKEY": "your sendgrid api key"
+}

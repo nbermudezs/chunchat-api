@@ -1,5 +1,6 @@
-var mongoUri = process.env.MONGOLAB_URI ||
-  process.env.MONGOHQ_URL ||
+var config = require('./../conf');
+var mongoUri = config.get('MONGOLAB_URI') ||
+  config.get('MONGOHQ_URL') ||
   'mongodb://localhost/main';
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
 
   sendgrid: {
     connector: "loopback-connector-sendgrid",
-    api_user: process.env.SENDGRID_API_USER,
-    api_key: process.env.SENDGRID_API_KEY
+    api_user: config.get('SENDGRID_APIUSER'),
+    api_key: config.get('SENDGRID_APIKEY')
   }
 };
