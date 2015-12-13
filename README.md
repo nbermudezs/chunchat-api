@@ -16,6 +16,35 @@ cp ./conf/settings.sample.json ./conf/settings.json
 After copying the file you will have to set the appropriate values for [TokBox](http://tokbox.com) and [SendGrid](https://sendgrid.com) APIs credentials.
 
 
+### Code Structure
+
+The project is structured in the following way:
+
+- `client`: this folder is supposed to contain static assets like HTML or CSS files.
+In the best case scenario you shouldn't need to put anything in there since this is supposed
+to stay as a pure API app.
+
+- `common`: contains that can be used in other parts of the app, mainly models.
+
+  - `mixins`: contains files that are not tied to an specific model, instead they can be used to extend a model to add an specific functionality. E.g. add archiving methods to an `Event` model. Note that this files does not handle creating the necessary fields in the model.
+
+    Each mixin have specific requirements that needs to be met. You can find those right before the `module.exports` call in each mixin file.
+
+  - `models`: the files inside this folder provide the interface between the API and the datasource. Each model is represented by at least two files: a .js file and a .json file.
+
+    The .json file specifies the attributes of the model: properties, access control lists, methods, etc.
+
+    The .js file is for you to extend the default model functionality and properties.
+
+
+- `server`: contains configuration files for the datasources, middleware and models as well as the starting script `server.js`.
+
+  - `boot` folder, this folder contains scripts that will be run each time the servers boots up, this is the ideal place to create seed files, configuration loading scripts and so on.
+
+
+Since this is an API most of the logic is inside the models and mixins.
+
+
 ### Deployment
 
 At the moment of writing this, the app is being deployed to Heroku. You will need to set the right buildpack for your Heroku app to make it work. [This](https://docs.strongloop.com/display/SL/Heroku) link offers details on how to do it.
