@@ -79,7 +79,8 @@ module.exports = function(Event) {
     'active',
     {
       http: { path: '/active', verb: 'get' },
-      returns: { arg: 'events', type: 'array' }
+      returns: { arg: 'events', type: 'array' },
+      description: 'Find all the events that are either `CREATED` or `STARTED`.'
     }
   );
 
@@ -88,7 +89,8 @@ module.exports = function(Event) {
     {
       http: { path: '/:id/start', verb: 'post' },
       accepts: acceptId,
-      returns: { arg: 'status', type: 'string' }
+      returns: { arg: 'status', type: 'string' },
+      description: 'Change the status of the event with the given id to `STARTED`.'
     }
   );
 
@@ -97,7 +99,8 @@ module.exports = function(Event) {
     {
       http: { path: '/:id/close', verb: 'post' },
       accepts: acceptId,
-      returns: { arg: 'status', type: 'string' }
+      returns: { arg: 'status', type: 'string' },
+      description: 'Change the status of the event with the given id to `CLOSED`.'
     }
   );
 
@@ -106,7 +109,8 @@ module.exports = function(Event) {
     {
       http: { path: '/:id/getToken', verb: 'get' },
       accepts: acceptId,
-      returns: { arg: 'token', type: 'string' }
+      returns: { arg: 'token', type: 'string' },
+      description: 'Generate a token for the TokBox session associated to the event.'
     }
   )
 };
