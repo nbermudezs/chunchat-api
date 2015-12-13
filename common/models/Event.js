@@ -67,6 +67,28 @@ module.exports = function(Event) {
     });
   }
 
+  // archive related.
+  var archiveOptions = {
+    name: 'Session Archive',
+    outputMode: config.get('ARCHIVE_OUTPUTMODE')
+  };
+
+  Event.startArchive = function(eventId, cb) {
+    Event.findById(eventId, function(err, ev) {
+      if (err) return cb(err);
+
+      var sessionId = ev && ev.sessionId;
+      if (!sessionId) return cb();
+
+      opentok.startArchive(sessionId, archiveOptions, function(err, archive) {
+        if (err) return cb(null, { success: false });
+
+        archive.updateAttribute('archiveId', archive.id);
+        cb(null, { success: archive.status === 'started' });
+      });
+    });
+  }
+
   // expose remote methods.
   var acceptId = {
     arg: 'id', type: 'any',
@@ -112,5 +134,15 @@ module.exports = function(Event) {
       returns: { arg: 'token', type: 'string' },
       description: 'Generate a token for the TokBox session associated to the event.'
     }
-  )
+  );
+
+  Event.remoteMethod(
+    'startArchive',
+    {
+      http: { path: '/:id/startArchive', verb: 'post' },
+      accepts: acceptId,
+      returns: { arg: 'success', type: 'boolean' },
+      description: 'Indicate TokBox to start the archiving of the event.'
+    }
+  );
 };
