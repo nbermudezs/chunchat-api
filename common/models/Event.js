@@ -67,41 +67,6 @@ module.exports = function(Event) {
     });
   };
 
-  // archive related.
-  var archiveOptions = {
-    name: 'Session Archive',
-    outputMode: config.get('ARCHIVE_OUTPUTMODE')
-  };
-
-  Event.startArchive = function(eventId, cb) {
-    Event.findById(eventId, function(err, ev) {
-      if (err) return cb(err);
-
-      var sessionId = ev && ev.sessionId;
-      if (!sessionId) return cb();
-
-      opentok.startArchive(sessionId, archiveOptions, function(err, archive) {
-        if (err) return cb(null, { success: false });
-
-        archive.updateAttribute('archiveId', archive.id);
-        cb(null, { success: archive.status === 'started' });
-      });
-    });
-  };
-
-  Event.stopArchive = function(eventId, cb) {
-    Event.findById(eventId, function(err, ev) {
-      if (err) return cb(err);
-
-      var archiveId = ev && ev.archiveId;
-      if (!archiveId) return cb();
-
-      opentok.stopArchive(archiveId, function(err, archive) {
-        cb(null, { success: !!err });
-      });
-    });
-  };
-
   // expose remote methods.
   var acceptId = {
     arg: 'id', type: 'any',
@@ -149,23 +114,8 @@ module.exports = function(Event) {
     }
   );
 
-  Event.remoteMethod(
-    'startArchive',
-    {
-      http: { path: '/:id/startArchive', verb: 'post' },
-      accepts: acceptId,
-      returns: { arg: 'success', type: 'boolean' },
-      description: 'Indicate TokBox to start the archiving of the event.'
-    }
-  );
-
-  Event.remoteMethod(
-    'stopArchive',
-    {
-      http: { path: '/:id/stopArchive', verb: 'post' },
-      accepts: acceptId,
-      returns: { arg: 'success', type: 'boolean' },
-      description: 'Indicate TokBox to stop the ongoing archiving of the event.'
-    }
-  );
+  if (config.get('ARCHIVE_ENABLED')) {
+    var exposeArchiveMethods = require('../mixins/archivable').exposeMethods;
+    exposeArchiveMethods(Event);
+  }
 };
