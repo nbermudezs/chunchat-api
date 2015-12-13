@@ -58,13 +58,36 @@ module.exports = function(Event) {
     });
   }
 
+  Event.getToken = function(eventId, cb) {
+    Event.findById(eventId, function(err, ev) {
+      if (err) return cb(err);
+      if (!ev) return cb();
+
+      cb(null, { token: opentok.generateToken(ev.sessionId) });
+    });
+  }
+
   // expose remote methods.
+  var acceptId = {
+    arg: 'id', type: 'any',
+    required: true,
+    description: 'Model id',
+    http: { source: 'path' }
+  };
+
+  Event.remoteMethod(
+    'active',
+    {
+      http: { path: '/active', verb: 'get' },
+      returns: { arg: 'events', type: 'array' }
+    }
+  );
 
   Event.remoteMethod (
     'start',
     {
-      http: { path: '/start', verb: 'get' },
-      accepts: { arg: 'id', type: 'string', http: { source: 'query' } },
+      http: { path: '/:id/start', verb: 'post' },
+      accepts: acceptId,
       returns: { arg: 'status', type: 'string' }
     }
   );
@@ -72,17 +95,18 @@ module.exports = function(Event) {
   Event.remoteMethod (
     'close',
     {
-      http: { path: '/close', verb: 'get' },
-      accepts: { arg: 'id', type: 'string', http: { source: 'query' } },
+      http: { path: '/:id/close', verb: 'post' },
+      accepts: acceptId,
       returns: { arg: 'status', type: 'string' }
     }
   );
 
   Event.remoteMethod(
-    'active',
+    'getToken',
     {
-      http: { path: '/active', verb: 'get' },
-      returns: { arg: 'events', type: 'array' }
+      http: { path: '/:id/getToken', verb: 'get' },
+      accepts: acceptId,
+      returns: { arg: 'token', type: 'string' }
     }
   )
 };
